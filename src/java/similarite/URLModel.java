@@ -8,7 +8,6 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.StmtIterator;
 
 public class URLModel {
 	
@@ -45,7 +44,6 @@ public class URLModel {
 	 */
 	
 	public List<String> getPlusSimilairesURL(List<URLModel> urlModels, int n) {
-
 		List<String> urlSimilaires = new LinkedList<String>();
 		
 		List<Long> similarite = new LinkedList<Long>();
@@ -80,20 +78,18 @@ public class URLModel {
 	 * @return l'indice de similarite calule selon l'indexe de Jaccard 
 	 */
 	public long similairiteParSujets(URLModel model2) {
-		// listSubjects()?
-		// getResource(String uri, ResourceF f) - Deprecated
 		long similarite = 0;
 		ResIterator model1Sujets = model.listSubjects();
 
 		while (model1Sujets.hasNext()) {
 
 			ResIterator model2Sujets = model2.model.listSubjects();
+                        Resource a = model1Sujets.next();
 
 			while (model2Sujets.hasNext()) {
-
-				Resource a = model1Sujets.next();
 				Resource b = model2Sujets.next();
-				if (a == b) {
+                                
+				if (a.equals(b)) {
 					similarite++;
 				}
 			}
@@ -116,25 +112,6 @@ public class URLModel {
 		return intersectionTripletsNorme(model, model2.model)
 				/ (model.size() + model2.model.size() - intersectionTripletsNorme(model, model2.model));
 	}
-
-	/**
-	 * public long similairiteParSujetPredicat(URLModel model2) { //marche pas
-	 * 
-	 * //contains(Resource s, Property p) //listResourcesWithProperty(Property
-	 * p) //listResourcesWithProperty(Property , RDFNode o) long similarite = 0;
-	 * ResIterator model1Sujets = model.listSubjects();
-	 * 
-	 * while(model1Sujets.hasNext()) {
-	 * 
-	 * ResIterator model2Sujets = model2.model.listSubjects();
-	 * 
-	 * while(model2Sujets.hasNext()) {
-	 * 
-	 * Resource a = model1Sujets.next(); Resource b = model2Sujets.next(); if(a
-	 * == b){ similarite++; } } } //Selon l'indexe de Jaccard J(A,B) =
-	 * |A^B|/|AvB| return similarite/(model.size()+model2.model.size() -
-	 * similarite); }
-	 */
 
 	private long intersectionTripletsNorme(Model model1, Model model2) {
 

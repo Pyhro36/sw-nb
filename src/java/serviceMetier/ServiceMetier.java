@@ -20,16 +20,15 @@ public class ServiceMetier {
 		Populator populator = new Populator();
 		
 		List<String> pagesURL = searchEngine.searchUrl(search);
-		String referenceURL = searchEngine.searchMarvelWikia(search);
 		
-		List<URLModel> allResources = new LinkedList<URLModel>();
+		List<URLModel> allResources = new LinkedList<>();
 		URLModel referenceURLModel = null;
 		
 		for (String pageURL : pagesURL) {
 			
 			String textPage = searchEngine.getText(pageURL);
 			SpotlightEntity[] spotlightEntities = spotlightWrapper.entityResult(textPage);
-			List<Resource> resources = new LinkedList<Resource>(); 
+			List<Resource> resources = new LinkedList<>(); 
 			
 			for (SpotlightEntity spotlightEntity : spotlightEntities) {
 				
@@ -43,7 +42,7 @@ public class ServiceMetier {
 		
 		String referenceTextPage = searchEngine.getText(referenceURL);
 		SpotlightEntity[] referenceSpotlightEntities = spotlightWrapper.entityResult(referenceTextPage);
-		List<Resource> referencesResources = new LinkedList<Resource>();
+		List<Resource> referencesResources = new LinkedList<>();
 		
 		for (SpotlightEntity spotlightEntity : referenceSpotlightEntities) {
 			
