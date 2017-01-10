@@ -38,10 +38,10 @@ public class URLModelTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {	
-		resources1 = new LinkedList<Resource>();
-		resources2 = new LinkedList<Resource>();
-		resources3 = new LinkedList<Resource>();
-		resources3 = new LinkedList<Resource>();
+		resources1 = new LinkedList<>();
+		resources2 = new LinkedList<>();
+		resources3 = new LinkedList<>();
+		resources3 = new LinkedList<>();
 		
 		Resource alice = ResourceFactory.createResource("http://example.org/alice");    	
 		Resource bob = ResourceFactory.createResource("http://example.org/bob");
@@ -52,16 +52,6 @@ public class URLModelTest {
 		resources1.add(jena);
 		
 		urlModel1 = new URLModel(resources1, "1");
-                
-		alice.addProperty(RDF.type, FOAF.Person);
-		alice.addProperty(FOAF.name, "Alice");
-		alice.addProperty(FOAF.mbox, ResourceFactory.createResource("mailto:alice@example.org"));
-		alice.addProperty(FOAF.knows, bob);
-		
-		bob.addProperty(RDF.type, FOAF.Person);
-		bob.addProperty(FOAF.name, "Bob");
-		bob.addProperty(FOAF.mbox, ResourceFactory.createResource("mailto:bob@example.org"));
-		bob.addProperty(FOAF.knows, alice);
 		
 		Resource alice1 = ResourceFactory.createResource("http://example.org/alice");    
 		Resource bob1 = ResourceFactory.createResource("http://example.org/bob");
@@ -134,7 +124,7 @@ public class URLModelTest {
 	 */
 	@Test
 	public void testGetPlusSimilairesURL() {
-		List<URLModel> urlModels = new LinkedList<URLModel>();
+		List<URLModel> urlModels = new LinkedList<>();
 		
 		urlModels.add(urlModel2);
 		urlModels.add(urlModel3);

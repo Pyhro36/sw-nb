@@ -209,6 +209,5 @@ public class SpotlightWrapper {
 		}
 		
 		return getEntityList(Json.createReader(response).readObject());
-	}
-	
+	}	
 }

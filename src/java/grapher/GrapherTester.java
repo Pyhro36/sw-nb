@@ -1,6 +1,7 @@
 package grapher;
 
 import java.io.IOException;
+import org.apache.jena.rdf.model.Model;
 
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
@@ -65,9 +66,10 @@ class GrapherTester {
 		System.out.println(TEST_RESOURCE);
 		System.out.println();
 		
-		Resource testResource = ModelFactory.createDefaultModel().createResource(TEST_RESOURCE);
+		Model  model =  ModelFactory.createDefaultModel();
+                Resource testResource = model.createResource(TEST_RESOURCE);
 		Populator p = new Populator();
-		testResource = p.populate(testResource);
+		testResource = p.populate(testResource, model);
 		for (Statement s : testResource.listProperties().toList()) {
 			System.out.println(s);
 		}

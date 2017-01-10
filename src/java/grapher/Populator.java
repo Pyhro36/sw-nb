@@ -7,6 +7,7 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.QuerySolutionMap;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -65,8 +66,8 @@ public class Populator {
 	 * @param resource La ressource à peupler
 	 * @return La ressource, une fois peuplée
 	 */
-	public Resource populate(Resource resource) {
-		return populate(resource, GrapherConfig.BASE_SPARQL_QUERY_STRING);
+	public Resource populate(Resource resource, Model model) {
+		return populate(resource, model, GrapherConfig.BASE_SPARQL_QUERY_STRING);
 	}
 	
 	/**
@@ -85,21 +86,20 @@ public class Populator {
 	 * @param queryString Le modèle de requête à utiliser
 	 * @return La ressource, une fois peuplée
 	 */
-	public Resource populate(Resource resource, String queryString) {
+	public Resource populate(Resource resource, Model model, String queryString) {
 		QuerySolutionMap initialBinding = new QuerySolutionMap();
 		initialBinding.add("resource", resource);
 		Query query = (new ParameterizedSparqlString(queryString, initialBinding)).asQuery();
 		try (QueryExecution qexec = QueryExecutionFactory.sparqlService(this.endpoint, query)) {
 			ResultSet results = qexec.execSelect() ;
-			for ( ; results.hasNext() ; )
-			{
+			for ( ; results.hasNext() ; ) {
 				QuerySolution soln = results.nextSolution() ;
 				if (soln == null) continue;
 				if (soln.get("property") == null) continue;
 				if (!soln.get("property").isURIResource()) continue;
 				Property p = ResourceFactory.createProperty(soln.getResource("property").getURI());
 				RDFNode v = soln.get("value");
-				resource.addProperty(p, v);
+				model.add(resource, p, v);
 			}
 		}
 		return resource;

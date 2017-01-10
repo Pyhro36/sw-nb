@@ -1,5 +1,9 @@
 package serviceMetier;
 
+import com.apporiented.algorithm.clustering.AverageLinkageStrategy;
+import com.apporiented.algorithm.clustering.Cluster;
+import com.apporiented.algorithm.clustering.ClusteringAlgorithm;
+import com.apporiented.algorithm.clustering.PDistClusteringAlgorithm;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,51 +12,40 @@ import org.apache.jena.rdf.model.Resource;
 import grapher.Populator;
 import grapher.SpotlightEntity;
 import grapher.SpotlightWrapper;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import searchEngine.SearchEngine;
-import similarite.URLModel;
+import similarite.DissimilariteMatrice;
 
 public class ServiceMetier {
 	
-	public List<String> getSimilariteDeRequete(String search, int n) throws IOException {
-		
+	public Cluster getSimilariteDeRequete(String search, int n) throws IOException {		
 		SearchEngine searchEngine = new SearchEngine();
 		SpotlightWrapper spotlightWrapper = new SpotlightWrapper();
 		Populator populator = new Populator();
 		
 		List<String> pagesURL = searchEngine.searchUrl(search);
 		
-		List<URLModel> allResources = new LinkedList<>();
-		URLModel referenceURLModel = null;
+		List<Model> allResources = new LinkedList<>();
 		
 		for (String pageURL : pagesURL) {
-			
 			String textPage = searchEngine.getText(pageURL);
 			SpotlightEntity[] spotlightEntities = spotlightWrapper.entityResult(textPage);
-			List<Resource> resources = new LinkedList<>(); 
-			
+                        Model model = ModelFactory.createDefaultModel();
+                        
 			for (SpotlightEntity spotlightEntity : spotlightEntities) {
-				
 				Resource resource = spotlightEntity.getJenaResource();
-				populator.populate(resource);
-				resources.add(resource);
+                                populator.populate(resource, model);
 			}
 			
-			allResources.add(new URLModel(resources, pageURL));
+                        allResources.add(model);
+		
 		}
-		
-		String referenceTextPage = searchEngine.getText(referenceURL);
-		SpotlightEntity[] referenceSpotlightEntities = spotlightWrapper.entityResult(referenceTextPage);
-		List<Resource> referencesResources = new LinkedList<>();
-		
-		for (SpotlightEntity spotlightEntity : referenceSpotlightEntities) {
-			
-			Resource resource = spotlightEntity.getJenaResource();
-			populator.populate(resource);
-			referencesResources.add(resource);
-		}
-		
-		referenceURLModel = new URLModel(referencesResources, referenceURL);		
-		
-		return referenceURLModel.getPlusSimilairesURL(allResources, n);
-	}
+                
+                DissimilariteMatrice similariteMatrice = new DissimilariteMatrice(allResources, DissimilariteMatrice.TypeSimilarite.PAR_TRIPLETS);
+                ClusteringAlgorithm alg = new PDistClusteringAlgorithm();
+                Cluster cluster = alg.performClustering(similariteMatrice.getSimilarites(), (String[]) pagesURL.toArray(), new AverageLinkageStrategy());
+                
+                return cluster;
+        }
 }
