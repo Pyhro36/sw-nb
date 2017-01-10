@@ -12,7 +12,7 @@ import org.apache.jena.rdf.model.Resource;
 
 /**
  *
- * @author Pierre-Louis
+ * @author Pierre-Louis Lefebvre
  */
 public class DissimilariteMatrice {
     private double[][] dissimilarites;
@@ -69,7 +69,7 @@ public class DissimilariteMatrice {
 			}
 		}
 		// Selon l'indexe de Jaccard J(A,B) = |A^B|/|AvB|
-		return similarite / (model1.listSubjects().toList().size() + model2.listSubjects().toList().size() - similarite);
+		return similarite / ((double) model1.listSubjects().toList().size() + (double) model2.listSubjects().toList().size() - similarite);
     }
 
     /**
@@ -86,7 +86,7 @@ public class DissimilariteMatrice {
 
         long intersectionNorme = intersectionTripletsNorme(model1, model2);
 
-        double ret = (double) (intersectionNorme / (model1.size() + model2.size() - intersectionNorme));           
+        double ret = (double) ( (double) intersectionNorme / (double) (model1.size() + model2.size() - intersectionNorme));           
         return ret;
     }
 

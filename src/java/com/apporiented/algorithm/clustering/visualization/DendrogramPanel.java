@@ -30,10 +30,18 @@ import com.apporiented.algorithm.clustering.AverageLinkageStrategy;
 import com.apporiented.algorithm.clustering.Cluster;
 import com.apporiented.algorithm.clustering.ClusteringAlgorithm;
 import com.apporiented.algorithm.clustering.DefaultClusteringAlgorithm;
+import com.apporiented.algorithm.clustering.WeightedLinkageStrategy;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.sparql.vocabulary.FOAF;
+import org.apache.jena.vocabulary.RDF;
 import serviceMetier.ServiceMetier;
+import similarite.DissimilariteMatrice;
 
 public class DendrogramPanel extends JPanel {
 
@@ -302,12 +310,6 @@ public class DendrogramPanel extends JPanel {
         dp.setShowDistances(false);
 
         Cluster cluster = createSampleCluster();
-        
-        try {
-            cluster = new ServiceMetier().getSimilariteDeRequete("Orange", 10);
-        } catch (IOException ex) {
-            Logger.getLogger(DendrogramPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
         dp.setModel(cluster);
         frame.setVisible(true);
     }
@@ -317,9 +319,8 @@ public class DendrogramPanel extends JPanel {
                 { 7, 3, 9, 0, 6, 13 }, { 11, 8, 2, 6, 0, 10 }, { 14, 10, 8, 13, 10, 0 } };
         String[] names = new String[] { "O1", "O2", "O3", "O4", "O5", "O6" };
         ClusteringAlgorithm alg = new DefaultClusteringAlgorithm();
-        Cluster cluster = alg.performClustering(distances, names, new AverageLinkageStrategy());
+        Cluster cluster = alg.performClustering(distances, names, new WeightedLinkageStrategy());
         cluster.toConsole(0);
         return cluster;
     }
-
 }

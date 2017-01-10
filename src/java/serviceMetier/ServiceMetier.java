@@ -1,9 +1,9 @@
 package serviceMetier;
 
-import com.apporiented.algorithm.clustering.AverageLinkageStrategy;
 import com.apporiented.algorithm.clustering.Cluster;
 import com.apporiented.algorithm.clustering.ClusteringAlgorithm;
 import com.apporiented.algorithm.clustering.PDistClusteringAlgorithm;
+import com.apporiented.algorithm.clustering.WeightedLinkageStrategy;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +17,11 @@ import org.apache.jena.rdf.model.ModelFactory;
 import searchEngine.SearchEngine;
 import similarite.DissimilariteMatrice;
 
+/**
+ * 
+ * @author Pierre-Louis Lefebvre
+ * 
+ */
 public class ServiceMetier {
 	
 	public Cluster getSimilariteDeRequete(String search, int n) throws IOException {		
@@ -44,7 +49,7 @@ public class ServiceMetier {
                 
                 DissimilariteMatrice similariteMatrice = new DissimilariteMatrice(allResources, DissimilariteMatrice.TypeSimilarite.PAR_TRIPLETS);
                 ClusteringAlgorithm alg = new PDistClusteringAlgorithm();
-                Cluster cluster = alg.performClustering(similariteMatrice.getSimilarites(), (String[]) pagesURL.toArray(), new AverageLinkageStrategy());
+                Cluster cluster = alg.performClustering(similariteMatrice.getSimilarites(), (String[]) pagesURL.toArray(), new WeightedLinkageStrategy());
                 
                 return cluster;
         }
