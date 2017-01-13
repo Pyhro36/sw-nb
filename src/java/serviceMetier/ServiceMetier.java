@@ -12,6 +12,8 @@ import org.apache.jena.rdf.model.Resource;
 import grapher.Populator;
 import grapher.SpotlightEntity;
 import grapher.SpotlightWrapper;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import searchEngine.SearchEngine;
@@ -32,7 +34,8 @@ public class ServiceMetier {
 		List<String> pagesURL = searchEngine.searchUrl(search);
 		
 		List<Model> allResources = new LinkedList<>();
-		
+		Map<String, Model> urlToGraph = new HashMap<>();
+                
 		for (String pageURL : pagesURL) {
 			String textPage = searchEngine.getText(pageURL);
 			SpotlightEntity[] spotlightEntities = spotlightWrapper.entityResult(textPage);
@@ -44,11 +47,38 @@ public class ServiceMetier {
 			}
 			
                         allResources.add(model);
+                        urlToGraph.put(pageURL, model);
 		}
                 
                 DissimilariteMatrice similariteMatrice = new DissimilariteMatrice(allResources, DissimilariteMatrice.TypeSimilarite.PAR_TRIPLETS);
                 ClusteringAlgorithm alg = new PDistClusteringAlgorithm();
                 Cluster cluster = alg.performClustering(similariteMatrice.getSimilarites(), (String[]) pagesURL.toArray(), new WeightedLinkageStrategy());
+                
+                // get 4 mains clusters
+                List<Cluster> clusters = new LinkedList<>();
+                
+                clusters.add(cluster.getChildren().get(0).getChildren().get(0));
+                clusters.add(cluster.getChildren().get(0).getChildren().get(1));
+                clusters.add(cluster.getChildren().get(1).getChildren().get(0));
+                clusters.add(cluster.getChildren().get(1).getChildren().get(1));
+                
+                for(Cluster c : clusters) {                   
+                    List<Model> models = new LinkedList<>();
+                    List<String> urls = c.getLeafNames();
+                    
+                    for(String url : urls) {
+                        models.add(urlToGraph.get(url));
+                    }
+                    
+                    List<String> mainResources = getMainMainResources(models);
+                    
+                    for(String url : urls) {
+                        
+                        for(String uri : mainResources) {
+                            url.concat("\n" + uri);
+                        }  
+                    }
+                }
                 
                 return cluster;
         }
