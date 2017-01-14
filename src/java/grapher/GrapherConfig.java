@@ -23,7 +23,8 @@ public class GrapherConfig {
 	/**
 	 * @brief L'URL par défaut du service SPARQL à utiliser pour peupler les entités RDF
 	 * 
-	 * Valeur par défaut: <tt>http://dbpedia.org/sparql/</tt>
+         * Cette URL doit pointer sur un endpoint SPARQL disposant de suffisamment
+         * de données pour permettre au programme de fonctionner.
 	 */
 	public static final String DEFAULT_SPARQL_ENDPOINT = "http://dbpedia.org/sparql/";
 	
@@ -32,14 +33,24 @@ public class GrapherConfig {
 	 * 
 	 * Cette requête est paramétrée: elle doit contenir des variables dont les noms sont spécifiques.
 	 * Sans quoi, la mémthode <tt>Populator.populate()</tt> ne pourra pas formuler la requête finie, ni récupérer les données.
-	 * 
-	 * Valeur par défaut:
-	 * @code{.unparsed}
+         * 
+	 * Valeur avec un meilleur formattage:
+         * 
+         * @code
+PREFIX onto: <http://dbpedia.org/ontology/>
 SELECT ?property ?value
 WHERE {
-	?resource ?property ?value .
+    FILTER (
+        ?property != rdf:type AND
+        ?property != rdfs:label AND
+        ?property != rdfs:comment AND
+        ?property != rdfs:seeAlso AND
+        ?property != owl:sameAs AND
+        ?property != onto:abstract
+    )
+    <http://dbpedia.org/resource/Barack_Obama> ?property ?value .
 }
-	 * @endcode
+         * @endcode
 	 * 
 	 * @param ?resource est remplacé par le nom de la ressource à peupler, lors de l'exécution de la requête
 	 * @param ?property Le type de propiété, est utilisé pour lier <tt>?value</tt> à la ressource
@@ -50,7 +61,7 @@ WHERE {
 	/**
 	 * @brief Indice de confiance utilisé par Spotlight
 	 * 
-	 * Valeur par défaut: 0.35
+	 * Plus cette valeur est élevé, plus Spotlight sera strict sur la correspondance entre un terme et une ressource.
 	 */
 	public static final double SPOTLIGHT_CONFIDENCE = 0.5;
 	
@@ -58,8 +69,6 @@ WHERE {
 	 * @brief URL du serveur Spotlight par défaut
 	 * 
 	 * Il est important que ce serveur soit accessible publiquement, indépendant et toujours disponible.
-	 * 
-	 * Valeur par défaut: <tt>http://spotlight.sztaki.hu:2222/rest/annotate</tt>
 	 */
 	public static final String DEFAULT_SPOTLIGHT_URL = "http://www.dbpedia-spotlight.com/fr/annotate";
 }
