@@ -44,7 +44,6 @@ public class ServiceMetier {
 			}
 			
                         allResources.add(model);
-		
 		}
                 
                 DissimilariteMatrice similariteMatrice = new DissimilariteMatrice(allResources, DissimilariteMatrice.TypeSimilarite.PAR_TRIPLETS);
@@ -52,5 +51,12 @@ public class ServiceMetier {
                 Cluster cluster = alg.performClustering(similariteMatrice.getSimilarites(), (String[]) pagesURL.toArray(), new WeightedLinkageStrategy());
                 
                 return cluster;
+        }
+        
+        private List<String> getMainMainResources(List<Model> models) {
+            
+            List<String> mainResources = null;
+            
+            return mainResources;
         }
 }
