@@ -25,7 +25,7 @@ public class GrapherConfig {
 	 * 
 	 * Valeur par défaut: <tt>http://dbpedia.org/sparql/</tt>
 	 */
-	public static final String DEFAULT_SPARQL_ENDPOINT;
+	public static final String DEFAULT_SPARQL_ENDPOINT = "http://dbpedia.org/sparql/";
 	
 	/**
 	 * @brief La requête SPARQL qui sert de base pour peupler une ressource RDF
@@ -45,14 +45,14 @@ WHERE {
 	 * @param ?property Le type de propiété, est utilisé pour lier <tt>?value</tt> à la ressource
 	 * @param ?value La valeur de la propriété identifiée
 	 */
-	public static final String BASE_SPARQL_QUERY_STRING;
+	public static final String BASE_SPARQL_QUERY_STRING = "PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?property ?value WHERE { FILTER (?property != rdf:type AND ?property != rdfs:label AND ?property != rdfs:comment AND ?property != rdfs:seeAlso AND ?property != owl:sameAs AND ?property != onto:abstract ) <http://dbpedia.org/resource/Barack_Obama> ?property ?value . }";
 	
 	/**
 	 * @brief Indice de confiance utilisé par Spotlight
 	 * 
 	 * Valeur par défaut: 0.35
 	 */
-	public static final double SPOTLIGHT_CONFIDENCE;
+	public static final double SPOTLIGHT_CONFIDENCE = 0.5;
 	
 	/**
 	 * @brief URL du serveur Spotlight par défaut
@@ -61,39 +61,5 @@ WHERE {
 	 * 
 	 * Valeur par défaut: <tt>http://spotlight.sztaki.hu:2222/rest/annotate</tt>
 	 */
-	public static final String DEFAULT_SPOTLIGHT_URL;
-	
-	/**
-	 * @brief Le chemin du fichier de configuration utilisé pour obtenir les valeurs des paramètres
-	 * 
-	 * Ce fichier est un fichier XML généré par la classe Properties de Java.
-	 * 
-	 * Ce fichier est régénéré à chaque exécution du programme
-	 */
-	public static final String CONFIG_FILE_LOCATION = "config/grapher.xml";
-	
-	static {
-		Properties props = new Properties();
-		try {
-			props.loadFromXML(new FileInputStream(CONFIG_FILE_LOCATION));
-		} catch (IOException e) { /* do nothing */ }
-		
-		DEFAULT_SPARQL_ENDPOINT = props.getProperty("defaultSparqlEndpoint", "http://dbpedia.org/sparql/");
-		props.setProperty("defaultSparqlEndpoint", DEFAULT_SPARQL_ENDPOINT);
-		
-		BASE_SPARQL_QUERY_STRING = props.getProperty("baseQueryString", "SELECT ?property ?value WHERE { ?resource ?property ?value . }");
-		props.setProperty("baseQueryString", BASE_SPARQL_QUERY_STRING);
-		
-		SPOTLIGHT_CONFIDENCE = Double.valueOf(props.getProperty("spotlightConfidence", "0.35"));
-		props.setProperty("spotlightConfidence", String.valueOf(SPOTLIGHT_CONFIDENCE));
-		
-		DEFAULT_SPOTLIGHT_URL = props.getProperty("defaultSpotlightUrl", "http://spotlight.sztaki.hu:2222/rest/annotate");
-		props.setProperty("defaultSpotlightUrl", DEFAULT_SPOTLIGHT_URL);
-		
-		try {
-			props.storeToXML(new FileOutputStream(CONFIG_FILE_LOCATION), "IF4H4203 - Semantic Web Marvel Project\nGrapher Configuration file");
-		} catch (IOException e) {
-			//System.err.println("Unable to write to config file");
-		}
-	}
+	public static final String DEFAULT_SPOTLIGHT_URL = "http://www.dbpedia-spotlight.com/fr/annotate";
 }
