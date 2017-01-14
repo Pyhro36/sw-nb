@@ -64,6 +64,7 @@ public class Populator {
 	 * @see GrapherConfig.BASE_SPARQL_QUERY_STRING
 	 * 
 	 * @param resource La ressource à peupler
+         * @param model Le modèle JENA auquel appartient la ressource à peupler
 	 * @return La ressource, une fois peuplée
 	 */
 	public Resource populate(Resource resource, Model model) {
@@ -83,6 +84,7 @@ public class Populator {
 	 * @see GrapherConfig.BASE_SPARQL_QUERY_STRING
 	 * 
 	 * @param resource La ressource à peupler
+         * @param model Le modèle JENA auquel appartient la ressource à peupler
 	 * @param queryString Le modèle de requête à utiliser
 	 * @return La ressource, une fois peuplée
 	 */
