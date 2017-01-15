@@ -1,5 +1,9 @@
 package Interface;
 
+import com.apporiented.algorithm.clustering.Cluster;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import serviceMetier.ServiceMetier;
 
 /*
@@ -114,7 +118,11 @@ public class Interface extends javax.swing.JFrame {
 
     private void jButtonRechercheActionPerformed(java.awt.event.ActionEvent evt) {                                                 
  
-        Cluster cluster = serviceMetier.getSimilariteDeRequete(recherche.getText(), 10);
+        try {
+            Cluster cluster = serviceMetier.getSimilariteDeRequete(recherche.getText(), 10);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }                                                
 
     /**

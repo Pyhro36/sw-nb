@@ -112,6 +112,16 @@ public class Cluster
     {
         this.name = name;
     }
+    
+    public List<String> getAllLeafNames() { 
+        List<String> allLeafNames = new ArrayList<>();
+        
+        if(!leafNames.isEmpty()) {
+            allLeafNames.addAll(leafNames);       
+        }
+     
+        return allLeafNames;
+    }
 
     public void addChild(Cluster cluster)
     {
@@ -210,5 +220,4 @@ public class Cluster
         return dist;
 
     }
-
 }

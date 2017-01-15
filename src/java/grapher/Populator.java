@@ -83,6 +83,7 @@ public class Populator {
 	 * @see GrapherConfig.BASE_SPARQL_QUERY_STRING
 	 * 
 	 * @param resource La ressource à peupler
+         * @param model le graphe auquel appartient cette ressource
 	 * @param queryString Le modèle de requête à utiliser
 	 * @return La ressource, une fois peuplée
 	 */
