@@ -44,11 +44,11 @@ PREFIX onto: <http://dbpedia.org/ontology/>
 SELECT ?property ?value
 WHERE {
     FILTER (
-        ?property != rdf:type AND
-        ?property != rdfs:label AND
-        ?property != rdfs:comment AND
-        ?property != rdfs:seeAlso AND
-        ?property != owl:sameAs AND
+        ?property != rdf:type &&
+        ?property != rdfs:label &&
+        ?property != rdfs:comment &&
+        ?property != rdfs:seeAlso &&
+        ?property != owl:sameAs &&
         ?property != onto:abstract
     )
     ?resource ?property ?value .
@@ -59,7 +59,7 @@ WHERE {
 	 * @param ?property Le type de propiété, est utilisé pour lier <tt>?value</tt> à la ressource
 	 * @param ?value La valeur de la propriété identifiée
 	 */
-	public static final String BASE_SPARQL_QUERY_STRING = "PREFIX owl: <http://www.w3.org/2002/07/owl#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?property ?value WHERE { FILTER (?property != rdf:type AND ?property != rdfs:label AND ?property != rdfs:comment AND ?property != rdfs:seeAlso AND ?property != owl:sameAs AND ?property != onto:abstract ) ?resource ?property ?value . }";
+	public static final String BASE_SPARQL_QUERY_STRING = "PREFIX owl: <http://www.w3.org/2002/07/owl#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?property ?value WHERE { FILTER (?property != rdf:type && ?property != rdfs:label && ?property != rdfs:comment && ?property != rdfs:seeAlso && ?property != owl:sameAs && ?property != onto:abstract ) ?resource ?property ?value . }";
 	
 	/**
 	 * @brief Indice de confiance utilisé par Spotlight
