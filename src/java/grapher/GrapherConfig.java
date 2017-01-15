@@ -48,7 +48,7 @@ WHERE {
         ?property != owl:sameAs AND
         ?property != onto:abstract
     )
-    <http://dbpedia.org/resource/Barack_Obama> ?property ?value .
+    ?resource ?property ?value .
 }
          * @endcode
 	 * 
@@ -56,7 +56,7 @@ WHERE {
 	 * @param ?property Le type de propiété, est utilisé pour lier <tt>?value</tt> à la ressource
 	 * @param ?value La valeur de la propriété identifiée
 	 */
-	public static final String BASE_SPARQL_QUERY_STRING = "PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?property ?value WHERE { FILTER (?property != rdf:type AND ?property != rdfs:label AND ?property != rdfs:comment AND ?property != rdfs:seeAlso AND ?property != owl:sameAs AND ?property != onto:abstract ) <http://dbpedia.org/resource/Barack_Obama> ?property ?value . }";
+	public static final String BASE_SPARQL_QUERY_STRING = "PREFIX onto: <http://dbpedia.org/ontology/> SELECT ?property ?value WHERE { FILTER (?property != rdf:type AND ?property != rdfs:label AND ?property != rdfs:comment AND ?property != rdfs:seeAlso AND ?property != owl:sameAs AND ?property != onto:abstract ) ?resource ?property ?value . }";
 	
 	/**
 	 * @brief Indice de confiance utilisé par Spotlight
