@@ -30,7 +30,10 @@ public class Cluster
 
     private List<String> leafNames;
 
-    private Distance distance = new Distance();
+    public Distance distance = new Distance();
+  
+    
+
 
 
     public Cluster(String name)
@@ -123,8 +126,8 @@ public class Cluster
 
     @Override
     public String toString()
-    {
-        return "Cluster " + name;
+    { return  getName() + (isLeaf() ? " (leaf)" : "") + (distance != null ? "  distance: " + distance : "");
+        
     }
 
     @Override
