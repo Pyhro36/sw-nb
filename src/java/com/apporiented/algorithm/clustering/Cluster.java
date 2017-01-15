@@ -112,21 +112,27 @@ public class Cluster
     {
         this.name = name;
     }
-    
-    public List<String> getAllLeafNames() { 
-        List<String> allLeafNames = new ArrayList<>();
-        
-        if(!leafNames.isEmpty()) {
-            allLeafNames.addAll(leafNames);       
-        }
-     
-        return allLeafNames;
-    }
 
     public void addChild(Cluster cluster)
     {
         getChildren().add(cluster);
 
+    }
+    
+    public List<String> getAllChildrenNames() { 
+        List<String> allChildrenNames = new ArrayList<>();
+        
+        if(children.isEmpty()) {
+            allChildrenNames.add(name);
+            
+        } else {
+            
+            for (Cluster child : children) {
+                allChildrenNames.addAll(child.getAllChildrenNames());
+            }
+        }
+     
+        return allChildrenNames;
     }
 
     public boolean contains(Cluster cluster)

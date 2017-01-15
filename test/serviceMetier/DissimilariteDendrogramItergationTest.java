@@ -73,14 +73,11 @@ public class DissimilariteDendrogramItergationTest {
         // get 4 mains clusters
        List<Cluster> clusters = new LinkedList<>();
 
-       clusters.add(cluster.getChildren().get(0).getChildren().get(0));
-       clusters.add(cluster.getChildren().get(0).getChildren().get(1));
-       clusters.add(cluster.getChildren().get(1).getChildren().get(0));
-       clusters.add(cluster.getChildren().get(1).getChildren().get(1));
-
+       clusters.add(cluster);
+       
        for(Cluster c : clusters) {                   
            List<Model> models = new LinkedList<>();
-           List<String> urls = c.getLeafNames();
+           List<String> urls = c.getAllChildrenNames();
 
            for(String url : urls) {
                models.add(urlToGraph.get(url));

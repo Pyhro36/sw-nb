@@ -89,7 +89,7 @@ public class ServiceMetier {
         }
 
 	public List<String> getMainResources(List<Model> models) {
-            List<String> mainResources = null;
+            List<String> mainResources = new LinkedList<>();
             HashMap <String, Integer> resourcesMap = new HashMap<>();
             int[] intPlusPresentes = new int[] {0,0,0};
             String[] stringPlusPresentes = new String[3];
@@ -133,7 +133,7 @@ public class ServiceMetier {
                 }			
             }
 
-            for(int i = 0; i > 3; i++) {
+            for(int i = 0; i < 3; i++) {
                     mainResources.add(stringPlusPresentes[i]);
             }
 
