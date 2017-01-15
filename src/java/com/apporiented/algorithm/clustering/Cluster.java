@@ -30,7 +30,10 @@ public class Cluster
 
     private List<String> leafNames;
 
-    private Distance distance = new Distance();
+    public Distance distance = new Distance();
+  
+    
+
 
 
     public Cluster(String name)
@@ -115,6 +118,22 @@ public class Cluster
         getChildren().add(cluster);
 
     }
+    
+    public List<String> getAllChildrenNames() { 
+        List<String> allChildrenNames = new ArrayList<>();
+        
+        if(children.isEmpty()) {
+            allChildrenNames.add(name);
+            
+        } else {
+            
+            for (Cluster child : children) {
+                allChildrenNames.addAll(child.getAllChildrenNames());
+            }
+        }
+     
+        return allChildrenNames;
+    }
 
     public boolean contains(Cluster cluster)
     {
@@ -123,8 +142,8 @@ public class Cluster
 
     @Override
     public String toString()
-    {
-        return "Cluster " + name;
+    { return  getName() + (isLeaf() ? " (leaf)" : "") + (distance != null ? "  distance: " + distance : "");
+        
     }
 
     @Override
@@ -207,5 +226,4 @@ public class Cluster
         return dist;
 
     }
-
 }

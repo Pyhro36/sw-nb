@@ -1,5 +1,11 @@
 package Interface;
 
+import com.apporiented.algorithm.clustering.Cluster;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import serviceMetier.ServiceMetier;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -34,6 +40,8 @@ public class Interface extends javax.swing.JFrame {
         jButtonRecherche = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultat = new javax.swing.JTextArea();
+        
+        serviceMetier = new ServiceMetier();
         
         resultat.setVisible(false);
 
@@ -109,7 +117,12 @@ public class Interface extends javax.swing.JFrame {
     }                                         
 
     private void jButtonRechercheActionPerformed(java.awt.event.ActionEvent evt) {                                                 
-        // TODO add your handling code here:
+ 
+        try {
+            Cluster cluster = serviceMetier.getSimilariteDeRequete(recherche.getText(), 10);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }                                                
 
     /**
@@ -153,5 +166,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JButton logo;
     private javax.swing.JTextField recherche;
     private javax.swing.JTextArea resultat;
+    private ServiceMetier serviceMetier;
     // End of variables declaration                   
 }

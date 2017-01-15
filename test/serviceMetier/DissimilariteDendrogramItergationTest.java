@@ -13,7 +13,10 @@ import com.apporiented.algorithm.clustering.WeightedLinkageStrategy;
 import com.apporiented.algorithm.clustering.visualization.DendrogramPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -51,14 +54,49 @@ public class DissimilariteDendrogramItergationTest {
         frame.setVisible(true);
     }
     
-    private static Cluster createSampleClusterWithGraphs() {      
-        List<Model> models = GraphsModelsConstructor.createExampleModels();
+    private static Cluster createSampleClusterWithGraphs() {
+        ServiceMetier sm = new ServiceMetier();
         
-        DissimilariteMatrice dm = new DissimilariteMatrice(models, DissimilariteMatrice.TypeSimilarite.PAR_TRIPLETS);
-        ClusteringAlgorithm alg = new DefaultClusteringAlgorithm();
+        List<Model> recourcesModels = GraphsModelsConstructor.createExampleModels();
         String[] names = new String[]{"model1", "model2", "model3", "model4"};
+        Map<String, Model> urlToGraph = new HashMap<>();
+        
+        for (int i = 0; i < names.length; i++) {
+            urlToGraph.put(names[i], recourcesModels.get(i));
+        }
+        
+        DissimilariteMatrice dm = new DissimilariteMatrice(recourcesModels, DissimilariteMatrice.TypeSimilarite.PAR_TRIPLETS);
+        ClusteringAlgorithm alg = new DefaultClusteringAlgorithm();
         Cluster cluster = alg.performClustering(dm.getSimilarites(), names, new AverageLinkageStrategy());
         cluster.toConsole(0);
+        
+        // get 4 mains clusters
+       List<Cluster> clusters = new LinkedList<>();
+
+       clusters.add(cluster);
+       
+       for(Cluster c : clusters) {                   
+           List<Model> models = new LinkedList<>();
+           List<String> urls = c.getAllChildrenNames();
+
+           for(String url : urls) {
+               models.add(urlToGraph.get(url));
+           }
+
+           List<String> mainResources = sm.getMainResources(models);
+
+           for(int i = 0; i < urls.size(); i++) {
+
+               String url = urls.remove(i);
+
+               for(String uri : mainResources) {
+                   url = url.concat("  "+uri);
+               } 
+
+               urls.add(i, url);
+           }
+       }       
+        
         return cluster;
     }
 }
